@@ -152,7 +152,7 @@ class InstaBot:
 
 
 
-bot = InstaBot("aq.twins", "Anonymes12");
+bot = InstaBot("username", "password");
 bot.Connect();
 bot.checkLoggin();
 
