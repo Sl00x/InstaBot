@@ -10,8 +10,8 @@ import requests
 class InstaBot:
     
     def __init__(self, user, passw):
-        self.password = passw
-        self.username = user
+        self.password = "pass"
+        self.username = "user"
         self.uri = "https://instagram.com/"
         self.driver = webdriver.Chrome("./chromedriver.exe")
         self.islog = False
@@ -97,7 +97,7 @@ class InstaBot:
 
             self.chatUri = self.driver.current_url
 
-    def launchBotChat(self, username):
+    def launchBotChat(self):
         try:
             LIST = []
             listMessages = self.driver.find_elements_by_class_name("_7UhW9")
@@ -138,18 +138,35 @@ class InstaBot:
         if(self.alreadyFollowed(username)):
             print("[SEARCH FROM {" + username + "}] This users is followed by you !")
 
-
     def followProfil(self, username):
         self.driver.get(self.uri + username + "/")
         time.sleep(2)
 
+    def autoreload(self):
+        time.sleep(2)
+        notif = self.driver.find_elements_by_class_name("HoLwm")
+        if bot.IsNotNull(notif):
+            notif[0].click()
+        print('tick')
+        newMsg = self.driver.find_elements_by_class_name("Sapc9")
+        if bot.IsNotNull(newMsg):
+            newMsg[0].click()
+            self.launchBotChat()
+            self.driver.get('https://www.instagram.com/direct/inbox/')
+            time.sleep(1.5)
+        time.sleep(0.25)
 
-
-
+    def IsNotNull(self, list_v):
+        try:
+            list_v[0]
+        except IndexError:
+            return False
+        return True
 
 
         
-
+    def getpage(self, url):
+        self.driver.get(url)
 
 
 bot = InstaBot("username", "password");
@@ -157,7 +174,10 @@ bot.Connect();
 bot.checkLoggin();
 
 if(bot.isLog()):
-    bot.getProfil("alexunivex")
+    i = 0
+    bot.getpage('https://www.instagram.com/direct/inbox')
+    while(i<2):
+         bot.autoreload()
 
 
 def command():
